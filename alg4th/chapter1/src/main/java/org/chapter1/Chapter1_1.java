@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import edu.princeton.cs.algs4.BinarySearch;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
@@ -18,11 +19,11 @@ public class Chapter1_1 {
 
 	static class C1_1_1 {
 		static void test() {
-			//( 0 + 15 ) / 2 
+			// ( 0 + 15 ) / 2 
 			int a = (0 + 15) / 2;
-			//2.0e-6*100000000.1
+			// 2.0e-6*100000000.1
 			double b = 2.0 * Math.pow(10.0, -6) * 100000000.1;
-			//true && false || true && true
+			// true && false || true && true
 			boolean c = true && false || true && true;
 			StdOut.printf("1.1.1:a=%d,b=%.10f,c=%b", a, b, c);
 		}
@@ -34,13 +35,13 @@ public class Chapter1_1 {
 
 	static class C1_1_2 {
 		static void test() {
-			//(1+2.236)/2
+			// (1+2.236)/2
 			float a = (1 + 2.236f) / 2;
-			//1+2+3+4.0
+			// 1+2+3+4.0
 			float b = 1 + 2 + 3 + 4.0f;
-			//4.1>=4
+			// 4.1>=4
 			boolean c = 4.1f >= 4;
-			//1+2+"3"
+			// 1+2+"3"
 			String d = 1 + 2 + "3";
 			StdOut.printf("1.1.2:a=%.3f,b=%.1f,c=%b,d=%s", a, b, c, d);
 		}
@@ -72,10 +73,10 @@ public class Chapter1_1 {
 
 	static class C1_1_4 {
 		static void test() {
-			//a:compile error
-			//b:compile error
-			//c:ok
-			//d:ok
+			// a:compile error
+			// b:compile error
+			// c:ok
+			// d:ok
 		}
 	}
 
@@ -170,7 +171,7 @@ public class Chapter1_1 {
 		static void test() {
 			int[] a;
 			for (int i = 0; i < 10; i++) {
-				//				a[i] = i * i;//compile error;
+				// a[i] = i * i;//compile error;
 			}
 		}
 	}
@@ -208,7 +209,7 @@ public class Chapter1_1 {
 
 	}
 
-	//System.out.println(i)-->System.out.println(a[i])
+	// System.out.println(i)-->System.out.println(a[i])
 	static class C1_1_12 {
 		static void print() {
 			int[] a = new int[10];
@@ -242,8 +243,6 @@ public class Chapter1_1 {
 
 		static int[][] swap(int[][] a) {
 			int[][] b = new int[a.length][a[0].length];
-			int x = 0;
-			int y = 0;
 			for (int i = 0; i < a.length; i++) {
 				for (int j = 0; j < a[i].length; j++) {
 					b[j][i] = a[i][j];
@@ -266,7 +265,7 @@ public class Chapter1_1 {
 	}
 
 	static class C1_1_14 {
-		//		logMN
+		// logMN
 		static int cal(int N, int M) {
 			int a = 0;
 
@@ -292,7 +291,7 @@ public class Chapter1_1 {
 						c++;
 				}
 				b[i] = c;
-				c = 0;//clear;
+				c = 0;// clear;
 			}
 			return b;
 		}
@@ -342,7 +341,7 @@ public class Chapter1_1 {
 		}
 
 		public static void main(String[] args) {
-			StdOut.print(exR2(6));//StackOverflowError
+			StdOut.print(exR2(6));// StackOverflowError
 		}
 	}
 
@@ -364,11 +363,11 @@ public class Chapter1_1 {
 		}
 
 		public static void main(String[] args) {
-			//mystery(a,b) = a * b;
+			// mystery(a,b) = a * b;
 			StdOut.println(mystery(2, 25));
 			StdOut.println(mystery(3, 11));
 			StdOut.println(mystery(4, 12));
-			//mystery2(a,b) = Math.pow(a,b);
+			// mystery2(a,b) = Math.pow(a,b);
 			StdOut.println(mystery2(2, 25));
 			StdOut.println(mystery2(3, 11));
 		}
@@ -398,15 +397,15 @@ public class Chapter1_1 {
 		}
 
 		public static void main(String[] args) {
-			//			for (int i = 0; i < 100; i++) {
-			//				StdOut.println(fibonacci(i));//max 1836311903;
-			//			}
+			// for (int i = 0; i < 100; i++) {
+			// StdOut.println(fibonacci(i));//max 1836311903;
+			// }
 			StdOut.print(Arrays.toString(fibonacciArray(100)));
 		}
 	}
 
 	static class C1_1_20 {
-		//ln(N!) = lnN + ln(N-1) + ln(N-2) + ... + ln(1);
+		// ln(N!) = lnN + ln(N-1) + ln(N-2) + ... + ln(1);
 		static double lnN(int n) {
 			if (n == 1)
 				return 0;
@@ -420,7 +419,7 @@ public class Chapter1_1 {
 
 	static class C1_1_21 {
 		public static void main(String[] args) {
-			String clrf = "\r\n";//windows
+			String clrf = "\r\n";// windows
 			String whitespace = " ";
 			String s = "zhangsan 10 20";
 			String s2 = "lisi 15 24";
@@ -430,12 +429,225 @@ public class Chapter1_1 {
 			for (int i = 0; i < allLines.length; i++) {
 				String line = allLines[i];
 				String[] columns = line.split(whitespace);
-				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2], Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
+				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2],
+						Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
 			}
 		}
 	}
 
 	static class C1_1_22 {
+		static int rank(int key, int[] a) {
+			return rank(key, a, 0, a.length - 1, 0);
+		}
 
+		static int rank(int key, int[] a, int lo, int hi) {
+			if (lo > hi)
+				return -1;
+			int mid = lo + (hi - lo) / 2;
+			if (key < a[mid])
+				return rank(key, a, lo, mid - 1);
+			else if (key > a[mid])
+				return rank(key, a, mid + 1, hi);
+			else
+				return mid;
+		}
+
+		static int rank(int key, int[] a, int lo, int hi, int level) {
+			StdOut.println(String.format("lo=%d,hi=%d,level=%d", lo, hi, level));
+			if (lo > hi)
+				return -1;
+			int mid = lo + (hi - lo) / 2;
+			if (key < a[mid]) {
+				level++;
+				for (int i = 0; i < level; i++) {
+					StdOut.print(" ");
+				}
+
+				return rank(key, a, lo, mid - 1, level);
+			} else if (key > a[mid]) {
+				level++;
+				for (int i = 0; i < level; i++) {
+					StdOut.print(" ");
+				}
+				return rank(key, a, mid + 1, hi, level);
+			} else {
+				return mid;
+			}
+		}
+
+		static int[] initData(int n) {
+			int[] a = new int[n];
+			for (int i = 0; i < a.length; i++) {
+				a[i] = StdRandom.uniform(100);
+			}
+			return a;
+		}
+
+		public static void main(String[] args) {
+			int[] a = initData(100);
+			Arrays.sort(a);
+			System.out.println(Arrays.toString(a));
+			System.out.println(rank(20, a));
+		}
+	}
+
+	static class C1_1_23 {
+		// white list; wtf??
+		public static void main(String[] args) {
+			// read the integers from a file
+			In in = new In(args[0]);
+			int[] whitelist = in.readAllInts();
+			String type = args[1];
+			String plus = "+";
+			String minus = "-";
+			// sort the array
+			Arrays.sort(whitelist);
+
+			// read integer key from standard input; print if not in whitelist
+			while (!StdIn.isEmpty()) {
+				int key = StdIn.readInt();
+				if (plus.equals(plus)) {
+					if (BinarySearch.indexOf(whitelist, key) == -1)
+						StdOut.println(key);
+				} else if (minus.equals(type)) {
+					if (BinarySearch.indexOf(whitelist, key) > 0)
+						StdOut.println(key);
+				}
+			}
+
+		}
+	}
+
+	static class C1_1_24 {
+		static int euclid(int p, int q, int l) {
+			StdOut.println(String.format("p=%d,q=%d,l=%d", p, q, l));
+			if (q == 0) {
+				return p;
+			}
+			int r = p % q;
+			l++;
+			for (int i = 0; i < l; i++) {
+				StdOut.print(" ");
+			}
+			return euclid(q, r, l);
+		}
+
+		public static void main(String[] args) {
+			int p, q;
+			p = StdIn.readInt();
+			q = StdIn.readInt();
+			StdOut.println(euclid(p, q, 0));
+		}
+	}
+
+	static class C1_1_25 {
+		// proof;
+	}
+
+	static class C1_1_26 {
+		static void sortABC(int a, int b, int c) {
+			if (a > b) {
+				int t = a;
+				a = b;
+				b = t;
+			}
+			if (a > c) {
+				int t = a;
+				a = c;
+				c = t;
+			}
+			if (b > c) {
+				int t = b;
+				b = c;
+				c = t;
+			}
+			StdOut.println(String.format("a=%d,b=%d,c=%d", a, b, c));
+		}
+
+		public static void main(String[] args) {
+			sortABC(5, 3, 4);
+		}
+	}
+
+	static class C1_1_27 {
+
+		// recursive
+		static double binomial(int N, int k, double p) {
+			StdOut.println(String.format("N=%d,k=%d", N, k));
+			if (N == 0 && k == 0)
+				return 1.0;
+			if (N < 0 || k < 0)
+				return 0.0;
+			return (1.0 - p) * binomial(N - 1, k, p) + p * binomial(N - 1, k - 1, p);
+		}
+
+		// array
+		static void binomialArray(int N, int K, double p) {
+			double[][] a = new double[N + 1][K + 1];
+			a[0][0] = 1;
+			for (int i = 1; i < N + 1; i++) {
+				a[i][0] = (1.0 - p) * a[i - 1][0];
+			}
+			for (int i = 1; i < K + 1; i++) {
+				a[0][i] = 0;
+			}
+			for (int i = 0; i < N + 1; i++) {
+				for (int j = 1; j <= i && j < K + 1; j++) {
+					a[i][j] = (1.0 - p) * a[i - 1][j] + p * a[i - 1][j - 1];
+				}
+			}
+			for (int i = 0; i < N + 1; i++) {
+				for (int j = 0; j < K + 1; j++) {
+					StdOut.printf("%.5f ", a[i][j]);
+				}
+				StdOut.println();
+			}
+		}
+
+		public static void main(String[] args) {
+			// StdOut.println(binomial(100, 50, 0.5));
+			// 100times,50times,0.5success;
+			binomialArray(100, 101, 0.5);
+		}
+	}
+
+	static class C1_1_28 {
+		static int count(int[] a) {// sorted array;
+			int count = 0;
+			for (int i = 0; i < a.length-1; i++) {
+				if (a[i] == a[i + 1])
+					count++;
+			}
+			return count;
+
+		}
+
+		static int[] remove(int[] a, int count) {
+			int[] r = new int[a.length - count];
+			int s = 0;
+			r[0] = a[0];
+			for (int i = 0; i < a.length-1; i++) {
+				if (a[i] == a[i + 1]) {
+					s++;
+				} else {
+					r[i-s+1] = a[i+1];
+				}
+			}
+			return r;
+		}
+
+		public static void main(String[] args) {
+			int[] a = { 1, 3, 3, 4, 4, 4, 6, 6, 7, 8, 9 };
+			int count = count(a);
+			StdOut.println(count);
+			int[] r = remove(a, count(a));
+			StdOut.println(Arrays.toString(r));
+		}
+	}
+
+	static class C1_1_29 {
+		static int rank(int key, int[] a) {
+			return -1;
+		}
 	}
 }
