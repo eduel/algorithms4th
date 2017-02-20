@@ -1,9 +1,14 @@
 package com.juzi.chapter1;
 
+import static java.lang.Math.rint;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import com.juzi.Constant;
 
 import edu.princeton.cs.algs4.BinarySearch;
 import edu.princeton.cs.algs4.In;
@@ -676,8 +681,57 @@ public class Chapter1_1 {
 		}
 
 		public static void main(String[] args) {
-			//			In in = new In
+			In in = new In(Constant.getParentPath() + "tinyW.txt");
+			int[] whiteList = in.readAllInts();
+			Arrays.sort(whiteList);
+			int key = StdIn.readInt();
+			int rank = rank(key, whiteList);
+			StdOut.println(String.format("get %d element lt %d", rank, key));
+			key = StdIn.readInt();
+			int count = count(key, whiteList);
+			StdOut.println(String.format("get %d element eq %d", count, key));
 
+		}
+	}
+
+	static class C1_1_30 {
+		static boolean[][] createArray(int N) {
+			boolean[][] r = new boolean[N][N];
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					int g = gcd(i, j);
+					r[i][j] = (g == 1) ? true : false;
+				}
+			}
+			return r;
+		}
+
+		static int gcd(int p, int q) {
+			if (p == 0 || q == 0)
+				return 1;
+			if (p % q == 0)
+				return q;
+			while (q > 0) {
+				int r = p % q;
+				p = q;
+				q = r;
+			}
+			return p;
+		}
+
+		static int gcd2(int p, int q) {
+			if (p == 0 || q == 0)
+				return 1;
+			if (p % q == 0)
+				return q;
+			return gcd(q, p % q);
+		}
+
+		public static void main(String[] args) {
+			int N = 10;
+			for (int i = 0; i < N; i++) {
+				StdOut.println(Arrays.toString(createArray(N)[i]));
+			}
 		}
 	}
 }
