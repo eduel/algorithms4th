@@ -1,14 +1,9 @@
 package com.juzi.chapter1;
 
-import static java.lang.Math.rint;
-import static java.lang.System.console;
-
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import javax.swing.InputMap;
 
 import edu.princeton.cs.algs4.BinarySearch;
 import edu.princeton.cs.algs4.In;
@@ -682,6 +677,7 @@ public class Chapter1_1 {
 
 		public static void main(String[] args) {
 			//			In in = new In
+
 		}
 	}
 }
