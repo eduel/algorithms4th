@@ -1,9 +1,9 @@
 package com.juzi.chapter1;
 
-import static java.lang.Math.rint;
-import static org.junit.Assert.fail;
-
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -12,6 +12,7 @@ import com.juzi.Constant;
 
 import edu.princeton.cs.algs4.BinarySearch;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
@@ -434,7 +435,8 @@ public class Chapter1_1 {
 			for (int i = 0; i < allLines.length; i++) {
 				String line = allLines[i];
 				String[] columns = line.split(whitespace);
-				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2], Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
+				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2],
+						Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
 			}
 		}
 	}
@@ -731,6 +733,483 @@ public class Chapter1_1 {
 			int N = 10;
 			for (int i = 0; i < N; i++) {
 				StdOut.println(Arrays.toString(createArray(N)[i]));
+			}
+		}
+	}
+
+	static class C1_1_31 {
+		static void drawcircle(double x, double y, double r, int N, double p, double[][] a) {
+			StdDraw.setXscale(0, x * 2);
+			StdDraw.setYscale(0, y * 2);
+			StdDraw.setPenRadius(0.05);
+			StdDraw.setPenColor(Color.red);
+			StdDraw.circle(x, y, r);
+			for (int i = 0; i < N; i++) {
+				StdDraw.setPenRadius(0.05);
+				StdDraw.setPenColor(Color.BLACK);
+				double m = 50 - 50 * Math.cos(2 * Math.PI * i / N);
+				double n = 50 + 50 * Math.sin(2 * Math.PI * i / N);
+				StdDraw.point(m, n);
+				a[i][0] = m;
+				a[i][1] = n;
+				StdDraw.setPenColor(Color.red);
+			}
+		}
+
+		static void drawRandomLine(double x, double y, double[][] a) {
+			StdDraw.setXscale(0, 2 * x);
+			StdDraw.setYscale(0, 2 * y);
+			StdDraw.setPenRadius(0.01);
+			StdDraw.setPenColor(Color.DARK_GRAY);
+			int N = a.length;
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (StdRandom.bernoulli(0.5))
+						StdDraw.line(a[i][0], a[i][1], a[j][0], a[j][1]);
+				}
+			}
+		}
+
+		public static void main(String[] args) {
+			double[][] a = new double[10][2];
+			drawcircle(50, 50, 50, 10, 0.2, a);
+			drawRandomLine(50, 50, a);
+		}
+	}
+
+	static class C1_1_32 {
+		static double[] segmentation(int N, double l, double r, double[] a) {
+			if (N == 0)
+				return a;
+			double s = (r - l) / N;
+			a[0] = l;
+			for (int i = 1; i < a.length; i++) {
+				a[i] = a[i - 1] + s;
+			}
+			return a;
+		}
+
+		static void histogram(double[] a, double[] b, double l, double h) {
+			int[] c = new int[a.length - 1];
+			for (int i = 0; i < b.length; i++) {
+				for (int j = 0; j < a.length - 1; j++) {
+					if (b[i] >= a[j] && b[i] < a[j + 1]) {
+						c[j]++;
+						continue;
+					}
+				}
+			}
+			int N = c.length;
+			StdDraw.setXscale(0, (h - l) * 1.2);
+			StdDraw.setYscale(0, b.length / N * 1.5);
+			for (int i = 0; i < N; i++) {
+				double x = l + (h - l) / N * i;
+				double y = c[i] / 2.0;
+				double rw = (h - l) / (2 * N);
+				double rh = c[i] / 2.0;
+				StdDraw.filledRectangle(x, y, rw, rh);
+				StdOut.println(c[i] + " ");
+			}
+		}
+
+		public static void main(String[] args) {
+			int N = 10;
+			int l = 2;
+			int h = 20;
+			double[] a = new double[N + 1];
+			double[] b = new double[N * N * N];
+			a = segmentation(N, l, h, a);
+			for (int i = 0; i < b.length; i++) {
+				b[i] = StdRandom.uniform(l, h);
+			}
+			histogram(a, b, l, h);
+		}
+	}
+
+	static class C1_1_33 {
+		static double dot(double[] x, double[] y) {
+			double r = 0;
+			for (int i = 0; i < x.length; i++) {
+				r += x[i] * y[i];
+			}
+			return r;
+		}
+
+		// a = N*P b = P*M-->r = N*M;
+		static double[][] mult(double[][] a, double[][] b) {
+			int N = a.length;
+			int M = b[0].length;
+			int P = a[0].length;
+			int P1 = b.length;
+			double[][] r = new double[N][M];
+			if (P != P1)
+				throw new IllegalArgumentException();
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < M; j++) {
+					for (int k = 0; k < P; k++) {
+						r[i][j] += a[i][k] * b[k][j];
+					}
+				}
+			}
+			return r;
+		}
+
+		static double[][] transpose(double[][] a) {
+			double[][] r = new double[a.length][a[0].length];
+			for (int i = 0; i < r.length; i++) {
+				for (int j = 0; j < r[0].length; j++) {
+					r[i][j] = a[j][i];
+				}
+			}
+			return r;
+		}
+
+		// a = N*P b = P*1; r = N;
+		static double[] mult(double[][] a, double[] y) {
+			int N = a.length;
+			double[] r = new double[N];
+			int P = a[0].length;
+			int P1 = y.length;
+			if (P != P1)
+				throw new IllegalArgumentException();
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < P; j++) {
+					r[i] += a[i][j] * y[j];
+				}
+			}
+			return r;
+		}
+
+		// x = 1*P a = P*N;r=N;
+		static double[] mult(double[] x, double[][] a) {
+			int N = a[0].length;
+			double[] r = new double[N];
+			int P = x.length;
+			int P1 = a.length;
+			if (P != P1)
+				throw new IllegalArgumentException();
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < P; j++) {
+					r[i] += x[j] * a[j][i];
+				}
+			}
+			return r;
+		}
+
+		static double[][] matrix(int N, int M) {
+			double[][] r = new double[N][M];
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < M; j++) {
+					r[i][j] = StdRandom.uniform(0, 10);
+				}
+			}
+			return r;
+		}
+
+		static double[] vector(int N) {
+			double[] r = new double[N];
+			for (int i = 0; i < N; i++) {
+				r[i] = StdRandom.uniform(0, 10);
+			}
+			return r;
+		}
+
+		static void print(double[][] matrix) {
+			StdOut.println("matrix:");
+			for (int i = 0; i < matrix.length; i++) {
+				for (int j = 0; j < matrix[0].length; j++) {
+					StdOut.print(matrix[i][j] + " ");
+				}
+				StdOut.println();
+			}
+		}
+
+		static void print(double[] vector) {
+			StdOut.println("vector:");
+			for (int i = 0; i < vector.length; i++) {
+				StdOut.print(vector[i] + " ");
+			}
+			StdOut.println();
+		}
+
+		public static void main(String[] args) {
+			double[][] a1 = matrix(2, 2);
+			print(a1);
+			double[][] a2 = matrix(2, 3);
+			print(a2);
+			double[][] a3 = mult(a1, a2);
+			print(a3);
+
+			double[] a4 = vector(2);
+			print(a4);
+			double[] a5 = mult(a4, a1);
+			print(a5);
+			double[] a6 = mult(a1, a4);
+			print(a6);
+		}
+	}
+
+	static class C1_1_34 {
+		static double[] initData(int N) {
+			double[] r = new double[N];
+			for (int i = 0; i < r.length; i++) {
+				r[i] = StdRandom.uniform();
+			}
+			return r;
+		}
+
+		static double min(double min, double input) {
+			return input < min ? input : min;
+		}
+
+		static double max(double max, double input) {
+			return input > max ? input : max;
+		}
+
+		// do not need array to store the inputs;
+		// only nedd 2 vars to store min and max;
+		static void printMinAndMax(double[] inputs) {
+			double min = 0;
+			double max = 0;
+			for (int i = 0; i < inputs.length; i++) {
+				min = min(min, inputs[i]);
+				max = max(max, inputs[i]);
+			}
+			StdOut.println(String.format("min=%f,max=%f", min, max));
+		}
+
+		// need to store in array,need to sort first;
+		static void printMedian(double[] inputs) {
+			Arrays.sort(inputs);
+			int length = inputs.length;
+			double median = 0;
+			median = (length % 2 == 0) ? (inputs[length / 2] + inputs[length / 2 - 1]) / 2 : inputs[length / 2];
+			StdOut.println(String.format("midian=%f", median));
+		}
+
+		//
+		static void printKmin(double[] inputs, int k) {
+			int[] a = new int[k];
+		}
+
+		// only need r;
+		static void printPows(double[] inputs) {
+			double r = 0;
+			for (int i = 0; i < inputs.length; i++) {
+				r += Math.pow(inputs[i], 2);
+			}
+			StdOut.println(String.format("pows=%f", r));
+		}
+
+		static void avg(double[] inputs) {
+			double r = 0;
+			int length = inputs.length;
+			for (int i = 0; i < length; i++) {
+				r += inputs[i];
+			}
+			r = r / length;
+			StdOut.println(String.format("avg=%f", r));
+		}
+
+		// need a array to store;
+		static void printGreaterThanAVGPercentage(double[] inputs) {
+			// 1、evaluate avg；
+
+			// 2、count num;
+		}
+
+		// N;
+		static void printASC(double[] inputs) {
+			double[] r = new double[inputs.length];
+
+		}
+	}
+
+	static class C1_1_35 {
+		private static final int sides = 6;
+
+		static double[] dist() {
+			double[] dist = new double[2 * sides + 1];
+			for (int i = 1; i <= sides; i++) {
+				for (int j = 1; j <= sides; j++) {
+					dist[i + j] += 1.0;
+				}
+			}
+			for (int k = 2; k <= 2 * sides; k++) {
+				dist[k] /= 6 * 6;
+			}
+			return dist;
+		}
+
+		static double[] toDo(int N) {
+			StdOut.println(Arrays.toString(dist()));
+			double[] a = new double[dist().length];
+			for (int i = 1; i <= N; i++) {
+				int s1 = StdRandom.uniform(1, 7);
+				int s2 = StdRandom.uniform(1, 7);
+				int r = s1 + s2;
+				a[r] += 1;
+			}
+			for (int k = 2; k <= 2 * sides; k++) {
+				a[k] /= N;
+			}
+			StdOut.println(Arrays.toString(a));
+			return a;
+		}
+
+		public static void main(String[] args) {
+
+			double[] dist = dist();
+			for (int i = 0; i < dist.length; i++) {
+				dist[i] = new BigDecimal(dist[i]).setScale(3, RoundingMode.DOWN).doubleValue();
+			}
+			int N = 1;
+			while (true) {
+				boolean matched = true;
+				double[] toDo = toDo(N);
+				for (int i = 0; i < toDo.length; i++) {
+					toDo[i] = new BigDecimal(toDo[i]).setScale(3, RoundingMode.DOWN).doubleValue();
+					if (toDo[i] != dist[i]) {
+						matched = false;
+						N++;
+						break;
+					}
+				}
+				if (matched) {
+					StdOut.println(String.format("matched=%d", N));
+					break;
+				}
+			}
+		}
+	}
+
+	static class C1_1_36 {
+
+		static int[] reset(int[] a) {
+			for (int i = 0; i < a.length; i++) {
+				a[i] = i;
+			}
+			return a;
+		}
+
+		static int[][] initTable(int M) {
+			int[][] r = new int[M][M];
+			for (int i = 0; i < M; i++) {
+				for (int j = 0; j < M; j++) {
+					r[i][j] = 0;
+				}
+			}
+			return r;
+		}
+
+		static void print(int M, int[][] r) {
+			for (int i = 0; i < M; i++) {
+				for (int j = 0; j < M; j++) {
+					StdOut.print(r[i][j] + " ");
+				}
+				StdOut.println();
+			}
+		}
+
+		public static void main(String[] args) {
+			int M, N;
+			StdOut.println("enter M:");
+			M = StdIn.readInt();
+			StdOut.println("enter N:");
+			N = StdIn.readInt();
+			int[][] r = initTable(M);
+			int[] a = reset(new int[M]);
+			for (int i = 0; i < N; i++) {
+				StdRandom.shuffle(a);
+				// C1_1_37.newShuffle(a);
+				for (int j = 0; j < M; j++) {
+					int t = a[j];
+					r[j][t]++;
+				}
+				reset(a);
+			}
+			print(M, r);
+		}
+	}
+
+	/**
+	 * 
+	 * @author dsk
+	 * @see C1_1_36#main(String[]) to test;
+	 */
+	static class C1_1_37 {
+
+		static void newShuffle(int[] a) {
+			if (a == null)
+				throw new IllegalArgumentException("argument array is null");
+			int n = a.length;
+			for (int i = 0; i < n; i++) {
+				int r = StdRandom.uniform(n); // between i and n-1
+				int temp = a[i];
+				a[i] = a[r];
+				a[r] = temp;
+			}
+		}
+	}
+
+	static class C1_1_38 {
+		static int rank(int key, int[] a) {
+			for (int i = 0; i < a.length; i++) {
+				if (key == a[i])
+					return i;
+			}
+			return -1;
+		}
+
+		public static void main(String[] args) {
+			In in = new In(Constant.getParentPath() + "largeW.txt");
+			int[] allLines = in.readAllInts();
+			StdOut.println("enter key:");
+			int key = StdIn.readInt();
+			long start = System.currentTimeMillis();
+			int index = rank(key, allLines);
+			long end = System.currentTimeMillis();
+			StdOut.println(String.format("key=%d,index=%d,time=%d", key, index, end - start));
+
+			long start1 = System.currentTimeMillis();
+			Arrays.sort(allLines);
+			int index2 = BinarySearch.indexOf(allLines, key);
+			long end1 = System.currentTimeMillis();
+			StdOut.println(String.format("key=%d,index=%d,time=%d", key, index2, end1 - start1));
+		}
+	}
+
+	static class C1_1_39 {
+		static int bs(int N) {
+			int[] a = new int[N];
+			int[] b = new int[N];
+			for (int i = 0; i < a.length; i++) {
+				a[i] = StdRandom.uniform(100000, 1000000);
+				b[i] = StdRandom.uniform(100000, 1000000);
+			}
+			Arrays.sort(b);
+			int count = 0;
+			for (int i = 0; i < N; i++) {
+				int index = BinarySearch.indexOf(b, a[i]);
+				if (index > 1)
+					count++;
+			}
+			return count;
+		}
+
+		public static void main(String[] args) {
+			int[] n = { 1000, 10000, 100000, 1000000 };
+			StdOut.println("enter T:");
+			int T = StdIn.readInt();
+			for (int j = 0; j < n.length; j++) {
+				StdOut.print("n=" + n[j] + " ");
+				int count =0;
+				for(int i=0;i<T;i++){
+					count += bs(n[j]);
+				}
+				double avg = (double)count/T;
+				StdOut.print("avg=" + avg);
+				StdOut.println();
 			}
 		}
 	}
