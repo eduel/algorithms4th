@@ -5,6 +5,8 @@ import java.io.File;
 public final class Constant {
 
 	private static final String data_dir = "algs4-data";
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	public static final String WHITE_SPACE = " ";
 
 	public static final String getParentPath() {
 		String workingDir = System.getProperty("user.dir");

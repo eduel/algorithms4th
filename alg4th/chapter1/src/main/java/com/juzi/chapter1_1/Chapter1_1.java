@@ -1,4 +1,4 @@
-package com.juzi.chapter1;
+package com.juzi.chapter1_1;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
