@@ -340,16 +340,44 @@ public class Chapter1_2 {
 		static class Rational {
 			int numerator;
 			int denomerator;
+			static Rational ZERO = new Rational(0, 1);
 
+			//can not input a irrational number;
 			public Rational(int numerator, int denomerator) {
-				super();
+				if (denomerator <= 0)
+					throw new ArithmeticException("denomerator can not be negative or zero");
+				long gcd = gcd(Math.abs(numerator), denomerator);
+				if (numerator != 0 && gcd != 1)
+					throw new ArithmeticException("gcd is not 1");
 				this.numerator = numerator;
 				this.denomerator = denomerator;
 			}
 
-			//TODO
 			Rational plus(Rational b) {
-				return null;
+				long p = this.numerator * b.denomerator + b.numerator * this.denomerator;
+				long q = this.denomerator * b.denomerator;
+				long gcd = gcd(Math.abs(p), q);
+
+				p = p / gcd;
+				q = q / gcd;
+				return new Rational((int) p, (int) q);
+			}
+
+			Rational minus(Rational b) {
+				return this.plus(new Rational(-b.numerator, b.denomerator));
+			}
+
+			Rational times(Rational b) {
+				long p = this.numerator * b.numerator;
+				long q = this.denomerator * b.denomerator;
+				long gcd = gcd(p, q);
+				p = p / gcd;
+				q = q / gcd;
+				return new Rational((int) p, (int) q);
+			}
+
+			Rational divides(Rational b) {
+				return times(new Rational(b.denomerator, b.numerator));
 			}
 
 			static long gcd(long p, long q) {
@@ -357,14 +385,68 @@ public class Chapter1_2 {
 					return p;
 				if (p % q == 0)
 					return q;
-				while (q > 0) {
+				while (q != 0) {
 					long r = p % q;
 					p = q;
 					q = r;
 				}
 				return p;
 			}
+
+			@Override
+			public boolean equals(Object other) {
+				if (this == other)
+					return true;
+				if (other == null)
+					return false;
+				if (this.getClass() != other.getClass())
+					return false;
+				Rational that = (Rational) other;
+				return this.minus(that).numerator == 0;
+			}
+
+			@Override
+			public String toString() {
+				return "" + this.numerator + "/" + this.denomerator;
+			}
+
+			public static void main(String[] args) {
+				//for one zero;
+				Rational r1 = new Rational(0, 5);
+				Rational r2 = new Rational(2, 3);
+				StdOut.println(r1.plus(r2));
+				//				//for normal;
+				Rational r3 = new Rational(-2, 3);
+				Rational r4 = new Rational(-3, 2);
+				StdOut.println(r3.plus(r4));
+				//for gcd;
+				Rational r5 = new Rational(2, 3);
+				Rational r6 = new Rational(3, 5);
+				StdOut.println(r5.plus(r6));
+				//for minus;
+				StdOut.println(r5.minus(r6));
+				StdOut.println(r5.times(r6));
+				StdOut.println(r5.divides(r6));
+				StdOut.println(r1.equals(ZERO));
+			}
 		}
+	}
+
+	/**
+	 * @see C1_2_16
+	 * @author eduel
+	 *
+	 */
+	static class C1_2_17 {
+
+	}
+
+	static class C1_2_18 {
+
+	}
+
+	static class C1_2_19 {
+
 	}
 
 }

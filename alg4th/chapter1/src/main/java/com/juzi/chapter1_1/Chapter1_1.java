@@ -435,8 +435,7 @@ public class Chapter1_1 {
 			for (int i = 0; i < allLines.length; i++) {
 				String line = allLines[i];
 				String[] columns = line.split(whitespace);
-				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2],
-						Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
+				StdOut.printf("%s %s %s %.3f \r\n", columns[0], columns[1], columns[2], Double.valueOf(columns[1]) / Double.valueOf(columns[2]));
 			}
 		}
 	}
@@ -713,7 +712,7 @@ public class Chapter1_1 {
 				return 1;
 			if (p % q == 0)
 				return q;
-			while (q > 0) {
+			while (q != 0) {
 				int r = p % q;
 				p = q;
 				q = r;
@@ -1203,11 +1202,11 @@ public class Chapter1_1 {
 			int T = StdIn.readInt();
 			for (int j = 0; j < n.length; j++) {
 				StdOut.print("n=" + n[j] + " ");
-				int count =0;
-				for(int i=0;i<T;i++){
+				int count = 0;
+				for (int i = 0; i < T; i++) {
 					count += bs(n[j]);
 				}
-				double avg = (double)count/T;
+				double avg = (double) count / T;
 				StdOut.print("avg=" + avg);
 				StdOut.println();
 			}
