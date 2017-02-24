@@ -342,7 +342,7 @@ public class Chapter1_2 {
 			int denomerator;
 			static Rational ZERO = new Rational(0, 1);
 
-			//can not input a irrational number;
+			// can not input a irrational number;
 			public Rational(int numerator, int denomerator) {
 				if (denomerator <= 0)
 					throw new ArithmeticException("denomerator can not be negative or zero");
@@ -411,19 +411,19 @@ public class Chapter1_2 {
 			}
 
 			public static void main(String[] args) {
-				//for one zero;
+				// for one zero;
 				Rational r1 = new Rational(0, 5);
 				Rational r2 = new Rational(2, 3);
 				StdOut.println(r1.plus(r2));
-				//				//for normal;
+				// //for normal;
 				Rational r3 = new Rational(-2, 3);
 				Rational r4 = new Rational(-3, 2);
 				StdOut.println(r3.plus(r4));
-				//for gcd;
+				// for gcd;
 				Rational r5 = new Rational(2, 3);
 				Rational r6 = new Rational(3, 5);
 				StdOut.println(r5.plus(r6));
-				//for minus;
+				// for minus;
 				StdOut.println(r5.minus(r6));
 				StdOut.println(r5.times(r6));
 				StdOut.println(r5.divides(r6));
@@ -442,9 +442,85 @@ public class Chapter1_2 {
 	}
 
 	static class C1_2_18 {
+		static class Accumulator {
+			double m;
+			double s;
+			int N;
 
+			void addDataValue(double x) {
+				N++;
+				s = s + 1.0 * (N - 1) / N * (x - m) * (x - m);
+				m = m + (x - m) / N;
+			}
+
+			double mean() {
+				return m;
+			}
+
+			double var() {
+				return s / N - 1;
+			}
+
+			double stddev() {
+				return Math.sqrt(var());
+			}
+		}
+
+		static class Accumulator2 {
+			double[] xs;
+
+			Accumulator2(double[] xs) {
+				this.xs = xs;
+			}
+
+			double var() {
+				int m = 0;
+				double sum = 0;
+				double avg = 0;
+				int N = xs.length;
+				for (int i = 0; i < N; i++) {
+					sum += xs[i];
+				}
+				avg = sum / N;
+				for (int i = 0; i < N; i++) {
+					m += (avg - xs[i]) * (avg - xs[i]);
+				}
+				m /= N - 1;// 标准差N,样本标准差N-1;
+				return m;
+			}
+
+			double stddev() {
+				return Math.sqrt(var());
+			}
+		}
+
+		static double[] initData(int N) {
+			double[] xs = new double[N];
+			for (int i = 0; i < N; i++) {
+				xs[i] = StdRandom.uniform(0, 50);
+			}
+			return xs;
+		}
+
+		public static void main(String[] args) {
+			int N = 100;
+			double[] xs = initData(N);
+			Accumulator ac1 = new Accumulator();
+			for (int i = 0; i < N; i++) {
+				ac1.addDataValue(xs[i]);
+			}
+			StdOut.printf("ac1 cal mean=%f,stddev=%f\n", ac1.var(), ac1.stddev());
+			Accumulator2 ac2 = new Accumulator2(xs);
+			StdOut.printf("ac2 cal mean=%f,stddev=%f", ac2.var(), ac2.stddev());
+		}
 	}
 
+	/**
+	 * 
+	 * @author dsk
+	 * @see Date
+	 * @see Transaction
+	 */
 	static class C1_2_19 {
 
 	}
