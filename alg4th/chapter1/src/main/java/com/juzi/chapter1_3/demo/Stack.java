@@ -73,6 +73,10 @@ public class Stack {
 			return N == 0;
 		}
 
+		boolean isFull() {
+			return items.length == N;
+		}
+
 		int size() {
 			return N;
 		}
@@ -150,7 +154,7 @@ public class Stack {
 	static class ListStack<Item> implements Iterable<Item> {
 		Node first;
 		int N;
-		
+
 		private class Node {
 			Item item;
 			Node next;
@@ -185,6 +189,7 @@ public class Stack {
 		public Iterator<Item> iterator() {
 			return new Iterator<Item>() {
 				Node current = first;
+
 				@Override
 				public boolean hasNext() {
 					return !isEmpty();

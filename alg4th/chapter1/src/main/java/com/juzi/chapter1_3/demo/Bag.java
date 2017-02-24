@@ -10,8 +10,8 @@ public class Bag {
 		Node first;
 
 		private class Node {
-			private Item item;
-			private Node next;
+			Item item;
+			Node next;//only commonbag can access;
 		}
 
 		void add(Item item) {
