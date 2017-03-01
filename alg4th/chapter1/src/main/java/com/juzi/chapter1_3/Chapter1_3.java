@@ -430,7 +430,7 @@ public class Chapter1_3 {
 				if (head == vals.length)
 					head = 0;
 				if (n > 0 && n == vals.length / 4)
-					resize(vals.length/2);
+					resize(vals.length / 2);
 				return e;
 			}
 
@@ -488,6 +488,97 @@ public class Chapter1_3 {
 			}
 
 		}
+	}
 
+	static class C1_3_15 {
+		static void k(String[] input, int k) {
+			Queue<String> queue = new Queue<>();
+			for (String s : input) {
+				queue.enqueue(s);
+			}
+			int index = input.length - k;
+			for (int i = 0; i < index + 1; i++) {
+				String kString = queue.dequeue();
+				if (i == index)
+					StdOut.println(kString);
+			}
+		}
+
+		public static void main(String[] args) {
+			String[] strings = "1,2,3,4,5,6,7,8,9,10".split(",");
+			k(strings, 6);
+		}
+	}
+
+	static class C1_3_16 {
+
+	}
+
+	static class C1_3_17 {
+
+	}
+
+	static class C1_3_18 {
+		//delete p.next;
+	}
+
+	static class C1_3_19 {
+		static class List<Item> implements Iterable<Item> {
+			Item[] items;
+			int head;
+			int tail;
+			int n;
+
+			@SuppressWarnings("unchecked")
+			public List(int capacity) {
+				items = (Item[]) new Object[capacity];
+			}
+
+			boolean isEmpty() {
+				return n == 0;
+			}
+
+			int size() {
+				return n;
+			}
+
+			public void add(Item item) {
+				items[n++] = item;
+				tail++;
+			}
+
+			public void delete(int x) {
+				@SuppressWarnings("unchecked")
+				Item[] newItems = (Item[]) new Object[items.length];
+				for (int i = 0; i < x; i++) {
+					newItems[i] = items[i];
+				}
+				for (int i = x; i < items.length; i++) {
+					newItems[i - 1] = items[i];
+				}
+				items = newItems;
+				tail--;
+				n--;
+			}
+
+			@Override
+			public Iterator<Item> iterator() {
+				return new Iterator<Item>() {
+					int i = 0;
+
+					@Override
+					public boolean hasNext() {
+						return i < n;
+					}
+
+					@Override
+					public Item next() {
+						Item item = items[i++];
+						return item;
+					}
+				};
+
+			}
+		}
 	}
 }
