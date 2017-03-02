@@ -625,12 +625,26 @@ public class Chapter1_3 {
 				int i = 0;
 				while (true) {
 					current = current.next;
-					i++;
-					if (i == n - 1) {
+					if (i == n - 2) {
 						current.next = null;
 						n--;
 						break;
 					}
+					i++;
+				}
+				return this;
+			}
+			List deleteK(int k){
+				Node current = first;
+				int i=0;
+				while(true){
+					current = current.next;
+					if(i==k-2){
+						current.next = current.next.next;
+						n--;
+						break;
+					}
+					i++;
 				}
 				return this;
 			}
@@ -663,6 +677,12 @@ public class Chapter1_3 {
 			Iterator<Integer> iterator = list.iterator();
 			while (iterator.hasNext()) {
 				System.out.println(iterator.next());
+			}
+			list.add(4).add(5).deleteK(2);
+
+			Iterator<Integer> iterator2 = list.iterator();
+			while(iterator2.hasNext()){
+				System.out.println(iterator2.next());
 			}
 		}
 	}
