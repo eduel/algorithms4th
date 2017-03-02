@@ -24,7 +24,7 @@ public class Chapter1_3 {
 
 	static class C1_3_2 {
 		public static void main(String[] args) {
-			Stack.main(null);//?
+			Stack.main(null);// ?
 		}
 	}
 
@@ -194,7 +194,7 @@ public class Chapter1_3 {
 		}
 	}
 
-	static class C1_3_8 {//?DoublingStackOfStrings
+	static class C1_3_8 {// ?DoublingStackOfStrings
 
 	}
 
@@ -231,9 +231,9 @@ public class Chapter1_3 {
 		}
 	}
 
-	//TODO
+	// TODO
 	static class C1_3_10 {
-		//+,-,*,/,(,);
+		// +,-,*,/,(,);
 		static class InfixToPostfix {
 			static List<String> ops = Arrays.asList("+", "-", "*", "/");
 			static String lowOP = "+-";
@@ -253,7 +253,7 @@ public class Chapter1_3 {
 				return priority(op1) >= priority(op2);
 			}
 
-			//input must be ok;
+			// input must be ok;
 			static String toPostfix(String[] input) {
 				Queue<String> expression = new Queue<>();
 				Stack<String> stack = new Stack<>();
@@ -389,7 +389,7 @@ public class Chapter1_3 {
 	}
 
 	static class C1_3_13 {
-		//b,c,d
+		// b,c,d
 	}
 
 	static class C1_3_14 {
@@ -438,7 +438,7 @@ public class Chapter1_3 {
 				assert capacity >= n;
 				String[] newVals = new String[capacity];
 				for (int i = 0; i < n; i++) {
-					newVals[i] = vals[(head + i) % vals.length];//importent;
+					newVals[i] = vals[(head + i) % vals.length];// importent;
 				}
 				head = 0;
 				tail = n;
@@ -482,7 +482,7 @@ public class Chapter1_3 {
 			queue.dequeue();
 			queue.enqueue("4");
 			queue.enqueue("5");
-			//			queue.enqueue("6");
+			// queue.enqueue("6");
 			for (String e : queue) {
 				StdOut.print(e);
 			}
@@ -519,7 +519,7 @@ public class Chapter1_3 {
 	}
 
 	static class C1_3_18 {
-		//delete p.next;
+		// delete p.next;
 	}
 
 	static class C1_3_19 {
@@ -578,6 +578,91 @@ public class Chapter1_3 {
 					}
 				};
 
+			}
+		}
+	}
+
+	static class C1_3_20 {
+		// first.next->null,
+		static class List implements Iterable<Integer> {
+			Node first;
+			Node last;
+			int n;
+
+			static class Node {
+				int val;
+				Node next;
+			}
+
+			boolean isEmpty() {
+				return n == 0;
+			}
+
+			int size() {
+				return n;
+			}
+
+			List add(int val) {
+				if (isEmpty()) {
+					first = new Node();
+					first.val = val;
+					first.next = null;
+					last = first;
+					n++;
+				} else {
+					Node oldLast = last;
+					last = new Node();
+					last.val = val;
+					last.next = null;
+					oldLast.next = last;
+					n++;
+				}
+				return this;
+			}
+
+			List deleteLast() {
+				Node current = first;
+				int i = 0;
+				while (true) {
+					current = current.next;
+					i++;
+					if (i == n - 1) {
+						current.next = null;
+						n--;
+						break;
+					}
+				}
+				return this;
+			}
+
+			@Override
+			public Iterator<Integer> iterator() {
+				return new Iterator<Integer>() {
+					int i = 0;
+					Node current = first;
+
+					@Override
+					public boolean hasNext() {
+						return i < n;
+					}
+
+					@Override
+					public Integer next() {
+						int val = current.val;
+						current = current.next;
+						i++;
+						return val;
+					}
+				};
+			}
+		}
+
+		public static void main(String[] args) {
+			List list = new List();
+			list.add(1).add(2).add(3).deleteLast();
+			Iterator<Integer> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				System.out.println(iterator.next());
 			}
 		}
 	}
