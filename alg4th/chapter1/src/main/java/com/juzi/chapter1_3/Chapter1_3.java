@@ -7,10 +7,16 @@ import java.util.NoSuchElementException;
 
 import com.juzi.chapter1_3.Chapter1_3.C1_3_10.InfixToPostfix;
 import com.juzi.chapter1_3.Chapter1_3.C1_3_4.Parenthess.Pair;
+import com.juzi.chapter1_3.demo.DoubleLinkedList;
+import com.juzi.chapter1_3.demo.Queue.CircleListQueue;
+import com.juzi.chapter1_3.demo.RandomBag;
+import com.juzi.chapter1_3.demo.ResizingArrayDeque;
+import com.juzi.chapter1_3.demo.Steque;
 
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Chapter1_3 {
 
@@ -634,12 +640,13 @@ public class Chapter1_3 {
 				}
 				return this;
 			}
-			List deleteK(int k){
+
+			List deleteK(int k) {
 				Node current = first;
-				int i=0;
-				while(true){
+				int i = 0;
+				while (true) {
 					current = current.next;
-					if(i==k-2){
+					if (i == k - 2) {
 						current.next = current.next.next;
 						n--;
 						break;
@@ -681,9 +688,232 @@ public class Chapter1_3 {
 			list.add(4).add(5).deleteK(2);
 
 			Iterator<Integer> iterator2 = list.iterator();
-			while(iterator2.hasNext()){
+			while (iterator2.hasNext()) {
 				System.out.println(iterator2.next());
 			}
+		}
+	}
+
+	static class C1_3_21 {
+		//no resizing;
+		static class List<Item> implements Iterable<Item> {
+			Item[] items;
+			int n;
+
+			@SuppressWarnings("unchecked")
+			public List(int capacity) {
+				items = (Item[]) new Object[capacity];
+			}
+
+			boolean isEmpty() {
+				return n == 0;
+			}
+
+			int size() {
+				return n;
+			}
+
+			void add(Item item) {
+				int length = items.length;
+				if (n != length)
+					items[n++] = item;
+			}
+
+			@Override
+			public Iterator<Item> iterator() {
+				return new Iterator<Item>() {
+					int i = 0;
+
+					@Override
+					public boolean hasNext() {
+						return i < n;
+					}
+
+					@Override
+					public Item next() {
+						return items[i++];
+					}
+				};
+			}
+
+		}
+
+		static boolean find(List<String> list, String key) {
+			Iterator<String> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				String currentString = iterator.next();
+				if (currentString.equals(key))
+					return true;
+			}
+			return false;
+		}
+
+		public static void main(String[] args) {
+			List<String> list = new List<>(5);
+			list.add("1");
+			list.add("2");
+			list.add("3");
+			boolean isFinded = find(list, "3");
+			StdOut.println(isFinded);
+		}
+	}
+
+	static class C1_3_22 {
+		//draw a pic;
+	}
+
+	static class C1_3_23 {
+
+	}
+
+	static class C1_3_24 {
+		//see 1.3.18
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			list.add(1).add(2).add(3).removeAfter(1).printElements();
+		}
+	}
+
+	static class C1_3_25 {
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			list.add(1).add(2).add(3).printElements();
+			list.insertAfter(2, 4).printElements();
+		}
+	}
+
+	static class C1_3_26 {
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			list.add(1).add(2).add(3).printElements();
+			list.add(1).add(1).printElements();
+			list.remove(1).printElements();
+		}
+	}
+
+	static class C1_3_27 {
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			list.add(2).add(5).add(10).add(6);
+			int max = list.max((i1, i2) -> {
+				if (i1 == i2)
+					return 0;
+				return i1 > i2 ? 1 : -1;
+			});
+			StdOut.println(max);
+		}
+	}
+
+	static class C1_3_28 {
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			list.add(2).add(5).add(10).add(6);
+			Iterator<Integer> iterator = list.iterator();
+			int max = list.max((i1, i2) -> {
+				if (i1 == i2)
+					return 0;
+				return i1 > i2 ? 1 : -1;
+			}, iterator, null, null);
+			StdOut.print(max);
+
+		}
+	}
+
+	static class C1_3_29 {
+		public static void main(String[] args) {
+			CircleListQueue<Integer> queue = new CircleListQueue<>();
+			queue.enQueue(1).enQueue(2).enQueue(3).printElements();
+			queue.deQueue();
+			queue.printElements();
+			queue.deQueue();
+			queue.printElements();
+			queue.deQueue();
+			queue.printElements();
+
+		}
+	}
+
+	static class C1_3_30 {
+		public static void main(String[] args) {
+			com.juzi.chapter1_3.demo.List<Integer> list = new com.juzi.chapter1_3.demo.List<>();
+			int reserveT = list.add(1).add(2).add(3).reserve();
+			StdOut.println(reserveT);
+		}
+	}
+
+	static class C1_3_31 {
+		public static void main(String[] args) {
+			DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+			DoubleLinkedList.insertBeforeFirst(list, 1);
+			DoubleLinkedList.insertBeforeFirst(list, 2);
+			DoubleLinkedList.insertBeforeFirst(list, 3);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.insertAfterLast(list, 4);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.removeFromFirst(list);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.removeFromLast(list);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.removeFromFirst(list);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.insertBeforeFirst(list, 3);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.insertBefore(list, 2, 5);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.insertAfter(list, 2, 6);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.insertBefore(list, 3, 7);
+			DoubleLinkedList.printElements(list);
+			DoubleLinkedList.remove(list, 2);
+			DoubleLinkedList.printElements(list);
+		}
+	}
+
+	static class C1_3_32 {
+		public static void main(String[] args) {
+			Steque<Integer> steque = new Steque<>();
+			steque.push(1).push(2).push(3);
+			steque.printElement();
+			steque.pop();
+			steque.printElement();
+			steque.enqueue(4);
+			steque.printElement();
+		}
+	}
+
+	static class C1_3_33 {
+		public static void main(String[] args) {
+			ResizingArrayDeque<Integer> deque = new ResizingArrayDeque<>();
+			deque.pushLeft(1);
+			deque.pushLeft(2);
+			deque.pushLeft(3);
+			deque.printElements();
+			deque.pushRight(4);
+			deque.printElements();
+			deque.popLeft();
+			deque.printElements();
+			deque.popRight();
+			deque.printElements();
+			deque.popLeft();
+			deque.printElements();
+			deque.popLeft();
+			deque.printElements();
+		}
+	}
+
+	static class C1_3_34 {
+		public static void main(String[] args) {
+			RandomBag<Integer> randomBag = new RandomBag<>();
+			randomBag.add(1);
+			randomBag.add(2);
+			randomBag.add(3);
+			randomBag.printElement();
+			
+			int[] ints = {1,2,3};
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
 		}
 	}
 }
