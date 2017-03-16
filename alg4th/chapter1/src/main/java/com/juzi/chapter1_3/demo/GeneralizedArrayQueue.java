@@ -50,7 +50,7 @@ public class GeneralizedArrayQueue<T> implements IterableAndPrintable<T> {
 		}
 		n--;
 		if (n > 0 && n < items.length >> 2)
-			resize(items.length << 1);
+			resize(items.length >> 1);
 		return ret;
 	}
 
