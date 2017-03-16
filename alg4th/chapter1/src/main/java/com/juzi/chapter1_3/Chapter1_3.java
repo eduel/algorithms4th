@@ -4,13 +4,18 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import com.juzi.chapter1_3.Chapter1_3.C1_3_10.InfixToPostfix;
 import com.juzi.chapter1_3.Chapter1_3.C1_3_4.Parenthess.Pair;
+import com.juzi.chapter1_3.demo.CircleListQueue;
 import com.juzi.chapter1_3.demo.DoubleLinkedList;
-import com.juzi.chapter1_3.demo.Queue.CircleListQueue;
+import com.juzi.chapter1_3.demo.GeneralizedArrayQueue;
+import com.juzi.chapter1_3.demo.GeneralizedListQueue;
 import com.juzi.chapter1_3.demo.RandomBag;
+import com.juzi.chapter1_3.demo.RandomQueue;
 import com.juzi.chapter1_3.demo.ResizingArrayDeque;
+import com.juzi.chapter1_3.demo.SimpleRingBuffer;
 import com.juzi.chapter1_3.demo.Steque;
 
 import edu.princeton.cs.algs4.Queue;
@@ -907,13 +912,169 @@ public class Chapter1_3 {
 			randomBag.add(1);
 			randomBag.add(2);
 			randomBag.add(3);
-			randomBag.printElement();
+			randomBag.printElements();
+
+			int[] ints = { 1, 2, 3 };
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
+			StdOut.println(StdRandom.discrete(ints));
+		}
+	}
+
+	static class C1_3_35 {
+		static class Card {
+			static final String[][] init = { { "aA", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10", "aJ", "aQ", "aK" },
+					{ "bA", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "bJ", "bQ", "bK" }, { "cA", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "cJ", "cQ", "cK" },
+					{ "dA", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "d10", "dJ", "dQ", "dK" }
+
+			};
+			private String card;
+
+			private Card(String card) {
+				this.card = card;
+			}
+
+			public static Card[][] deal() {
+				RandomQueue<Card> queue = new RandomQueue<>();
+				for (int i = 0; i < init.length; i++) {
+					for (int j = 0; j < init[0].length; j++) {
+						Card temp = new Card(init[i][j]);
+						queue.enqueue(temp);
+					}
+				}
+				Card[][] cards = new Card[4][13];
+
+				for (int i = 0; i < cards.length; i++) {
+					for (int j = 0; j < cards[0].length; j++) {
+						cards[i][j] = queue.dequeue();
+					}
+				}
+				return cards;
+
+			}
+
+			@Override
+			public String toString() {
+				return card;
+			}
+		}
+
+		public static void main(String[] args) {
+			RandomQueue<Integer> randomQueue = new RandomQueue<>();
+			randomQueue.enqueue(1);
+			randomQueue.enqueue(2);
+			randomQueue.enqueue(3);
+			randomQueue.printElements();
+			randomQueue.dequeue();
+			randomQueue.printElements();
+			randomQueue.samle();
+			randomQueue.dequeue();
+			randomQueue.printElements();
+			Card[][] card = Card.deal();
+			for (int i = 0; i < card.length; i++) {
+				StdOut.println(Arrays.toString(card[i]));
+			}
+
+		}
+	}
+
+	static class C1_3_37 {
+		public static void main(String[] args) {
+			Queue<Integer> queue = new Queue<>();
+			int n = 7;
+			int m = 2;
+			for (int i = 0; i < n; i++) {
+				queue.enqueue(i);
+			}
+			while (true) {
+				for (int i = 0; i < m - 1; i++) {
+					queue.enqueue(queue.dequeue());
+				}
+				int kill = queue.dequeue();
+				StdOut.println(kill);
+				n--;
+				if (n == 1) {
+					int remain = queue.dequeue();
+					StdOut.println(remain);
+					break;
+				}
+			}
+		}
+	}
+
+	static class C1_3_38 {
+		public static void main(String[] args) {
+			GeneralizedArrayQueue<Integer> arrayQueue = new GeneralizedArrayQueue<>();
+			for (int i = 0; i < 10; i++) {
+				arrayQueue.insert(i);
+			}
+			arrayQueue.printElements();
+			arrayQueue.delete(3);
+			arrayQueue.printElements();
+			arrayQueue.insert(10);
+			arrayQueue.printElements();
+			arrayQueue.delete(6);
+			arrayQueue.printElements();
+
+			//listQueue
+			StdOut.println("***for list queue***");
+			GeneralizedListQueue<Integer> listQueue = new GeneralizedListQueue<>();
+			for (int i = 0; i < 10; i++) {
+				listQueue.insert(i);
+			}
+			listQueue.printElements();
+			listQueue.delete(3);
+			listQueue.printElements();
+			listQueue.insert(10);
+			listQueue.printElements();
+			listQueue.delete(6);
+			listQueue.printElements();
+			listQueue.delete(1);
+			listQueue.printElements();
+			listQueue.delete(8);
+			listQueue.insert(11);
+			listQueue.printElements();
 			
-			int[] ints = {1,2,3};
-			StdOut.println(StdRandom.discrete(ints));
-			StdOut.println(StdRandom.discrete(ints));
-			StdOut.println(StdRandom.discrete(ints));
-			StdOut.println(StdRandom.discrete(ints));
+		}
+	}
+	static class C1_3_39{
+		public static void main(String[] args) {
+			SimpleRingBuffer<Integer> ringBuffer = new SimpleRingBuffer<>(2);
+			Thread t = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					while (true) {
+						try {
+							TimeUnit.MILLISECONDS.sleep(StdRandom.uniform(999));
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						ringBuffer.consume();
+					}
+				}
+			});
+			t.setName("consume thread");
+			t.start();
+			Thread t2 = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					for (int i = 0; i < 100; i++) {
+						ringBuffer.produce(i);
+						try {
+							TimeUnit.MILLISECONDS.sleep(StdRandom.uniform(999));
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+			t2.setName("produce thread");
+			t2.start();
 		}
 	}
 }
