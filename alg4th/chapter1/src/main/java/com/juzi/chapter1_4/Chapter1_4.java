@@ -380,8 +380,154 @@ public class Chapter1_4 {
 			}
 			return -1;
 		}
-		static void matrix(int[][] a){
-			
+
+		//N*N;
+		static void matrix(int[][] a) {
+			int wl = a.length;
+			int hl = a[0].length;
+			assert wl == hl;
+			int N = wl;
+			int m = Integer.MAX_VALUE;
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < N; i++) {
+				if (a[0][i] < m) {
+					m = a[0][i];
+					x = 0;
+					y = i;
+				}
+				if (a[N - 1][i] < m) {
+					m = a[N - 1][i];
+					x = N - 1;
+					y = i;
+				}
+				if (a[i][0] < m) {
+					m = a[i][0];
+					x = i;
+					y = 0;
+				}
+				if (a[i][N - 1] < m) {
+					m = a[i][N - 1];
+					x = i;
+					y = N - 1;
+				}
+			}
+			//if is corner
+			boolean clu = x == 0 && y == 0;
+			boolean cld = x == 0 && y == N - 1;
+			boolean cru = x == N - 1 && y == 0;
+			boolean crd = x == N - 1 && y == N - 1;
+			if (clu || cld || cru || crd) {
+				StdOut.printf("min:%d,[%d,%d]", m, x, y);
+				return;
+			}
+			//if is border;
+			boolean bl = y == 0;
+			boolean bu = x == 0;
+			boolean br = x == N - 1;
+			boolean bd = y == N - 1;
+			int v = 0;
+			if (bl)
+				v = a[x + 1][y];
+			else if (bu)
+				v = a[x][y + 1];
+			else if (br)
+				v = a[x - 1][y];
+			else
+				v = a[x][y - 1];
+
+			if (v > m) {
+				StdOut.printf("min:%d,[%d,%d]", m, x, y);
+				return;
+			}
+
+			//to cut;how to cut??
+
+		}
+
+		static int min(int[][] a, int N, int sx, int sy) {
+			StdOut.printf("N:%d,sx:%d,sy=%d\n", N, sx, sy);
+			if (N == 1) {
+				StdOut.println("min:" + a[sx][sy] + ",[x:0,y:0]");
+				return a[sx][sy];
+			}
+			int x = 0;
+			int y = 0;
+			int min = Integer.MAX_VALUE;
+			if (N == 2) {
+				min = a[sx][sy];
+				x = sx;
+				y = sy;
+				if (a[sx + 1][sy] < min) {
+					min = a[sx + 1][sy];
+					x = sx + 1;
+					y = sy;
+				}
+				if (a[sx][sy + 1] < min) {
+					min = a[sx][sy + 1];
+					x = sx;
+					y = sy + 1;
+				}
+				if (a[sx + 1][sy + 1] < min) {
+					min = a[sx + 1][sy + 1];
+					x = sx + 1;
+					y = sx + 1;
+				}
+				StdOut.println("min:" + min + ",[x:" + x + ",y:" + y + "]");
+				return min;
+			}
+			//			int ex = sx + N - 1;//[sx,ex]
+			int mid = sx + N / 2;
+			int i = sx;
+			while (i < sx + N) {
+				int cur = a[i][mid];
+				if (cur < min) {
+					min = cur;
+					x = i;
+					y = mid;
+				}
+				i++;
+			}
+			//check if the min is local min
+			int up = a[x][y - 1];
+			int down = a[x][y + 1];
+			if (up < min && down < min) {
+				StdOut.println("min:" + min + ",[x:" + x + ",y:" + y + "]");
+				return min;
+			}
+			//check the cur is to where
+			int le = N / 2;
+			if (x <= mid) {//left
+				if (up < down) {//left-up;
+					return min(a, le, sx, sy);
+				} else {//left-down;
+					sy = N % 2 == 0 ? sy + le : sy + le + 1;
+					return min(a, le, sx, sy);
+				}
+			} else {//right;
+				if (up < down) {//right-up
+					sx = N % 2 == 0 ? sx + le : sx + le + 1;
+					return min(a, le, sx, sy);
+				} else {//right-down;
+					sx = sx + le;
+					sy = sy + le;
+					return min(a, le, sx, sy);
+				}
+			}
+		}
+
+		public static void main(String[] args) {
+			int N = 10;
+			int[][] m = new int[N][N];
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					m[j][i] = StdRandom.uniform(100, 999);
+					StdOut.print(m[j][i] + " ");
+				}
+				StdOut.println();
+			}
+			StdOut.println("start to find local min");
+			min(m, N, 0, 0);
 		}
 	}
 
