@@ -1,5 +1,6 @@
 package com.juzi.chapter1_3;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,8 @@ import com.juzi.chapter1_3.demo.CircleListQueue;
 import com.juzi.chapter1_3.demo.DoubleLinkedList;
 import com.juzi.chapter1_3.demo.GeneralizedArrayQueue;
 import com.juzi.chapter1_3.demo.GeneralizedListQueue;
+import com.juzi.chapter1_3.demo.IterableAndPrintable;
+import com.juzi.chapter1_3.demo.MoveToFront;
 import com.juzi.chapter1_3.demo.RandomBag;
 import com.juzi.chapter1_3.demo.RandomQueue;
 import com.juzi.chapter1_3.demo.ResizingArrayDeque;
@@ -1035,10 +1038,11 @@ public class Chapter1_3 {
 			listQueue.delete(8);
 			listQueue.insert(11);
 			listQueue.printElements();
-			
+
 		}
 	}
-	static class C1_3_39{
+
+	static class C1_3_39 {
 		public static void main(String[] args) {
 			SimpleRingBuffer<Integer> ringBuffer = new SimpleRingBuffer<>(2);
 			Thread t = new Thread(new Runnable() {
@@ -1076,5 +1080,90 @@ public class Chapter1_3 {
 			t2.setName("produce thread");
 			t2.start();
 		}
+	}
+
+	static class C1_3_40 {
+		public static void main(String[] args) {
+			MoveToFront<Integer> list = new MoveToFront<>();
+			for (int i = 0; i < 5; i++) {
+				list.addToLast(i);
+			}
+			list.printElements();
+			list.delete(4);
+			list.printElements();
+			list.delete(3);
+			list.printElements();
+			list.addToLast(5);
+			list.printElements();
+		}
+	}
+
+	//??copy queue;
+	static class C1_3_41 {
+		public static void main(String[] args) {
+			class NewQueue<Item> extends Queue<Item> implements IterableAndPrintable<Item> {
+
+				public NewQueue() {
+					super();
+				}
+
+				public NewQueue(NewQueue<Item> old) {
+					Iterator<Item> iterator = old.iterator();
+					while (iterator.hasNext()) {
+						this.enqueue(iterator.next());
+					}
+				}
+			}
+			NewQueue<Integer> old = new NewQueue<>();
+			for (int i = 0; i < 10; i++)
+				old.enqueue(i);
+			NewQueue<Integer> newQueue = new NewQueue<>(old);
+			newQueue.dequeue();
+			newQueue.dequeue();
+			old.printElements();
+			old.enqueue(11);
+			newQueue.printElements();
+			old.printElements();
+		}
+	}
+
+	static class C1_3_43 {
+		static void files(File d, Queue<String> files, int level) {
+			String prefix = "";
+			for (int i = 0; i < level; i++) {
+				prefix += "-";
+			}
+			files.enqueue(prefix + d.getName());
+			level++;
+			File[] childFiles = d.listFiles();
+			for (File f : childFiles) {
+				if (f.isDirectory())
+					files(f, files, level);
+				else
+					files.enqueue(prefix+"-" + f.getName());
+			}
+		}
+
+		public static void main(String[] args) {
+			Queue<String> queue = new Queue<>();
+			File d = new File("E:\\迅雷下载");
+			files(d, queue, 0);
+			Iterator<String> iterator = queue.iterator();
+			while (iterator.hasNext()) {
+				StdOut.println(iterator.next());
+
+			}
+		}
+	}
+	//?
+	static class C1_3_45{
+		
+	}
+	//?
+	static class C1_3_46{
+		
+	}
+	static class C1_3_49{
+		
 	}
 }
