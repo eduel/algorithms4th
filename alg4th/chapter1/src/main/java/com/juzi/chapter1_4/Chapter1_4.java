@@ -339,13 +339,13 @@ public class Chapter1_4 {
 			int e = le - 1;
 			while (s < e) {
 				int mid = s + (e - s) / 2;
-				if (a[mid] < a[mid - 1] && a[mid] < a[mid - 1]) {
+				if (a[mid] < a[mid - 1] && a[mid] < a[mid + 1]) {
 					StdOut.printf("mid=%d,[%d,%d,%d]\n", mid, a[mid - 1], a[mid], a[mid + 1]);
 					return mid;
 				}
 				if (a[mid] > a[mid - 1]) {
 					e = mid + 1;
-				} else if (a[mid] > a[mid - 1]) {
+				} else if (a[mid] > a[mid + 1]) {
 					s = mid - 1;
 				}
 			}
@@ -528,6 +528,134 @@ public class Chapter1_4 {
 			}
 			StdOut.println("start to find local min");
 			min(m, N, 0, 0);
+		}
+	}
+
+	//NoRecursion
+	static class C1_4_20 {
+		//567894321;
+		static int search(int[] a, int k) {
+			//find the local max; lgN;
+			int le = a.length;
+			int max = 0;
+			if (le == 1) {
+				return a[0] == k ? 0 : -1;
+			}
+			if (le == 2) {
+
+				return a[0] == k ? 0 : (a[1] == k ? 1 : -1);
+			}
+			int s = 0;
+			int e = le - 1;
+			//lgN;
+			while (s < e) {
+				int mid = s + (e - s) / 2;
+				if (a[mid] > a[mid - 1] && a[mid] > a[mid + 1]) {
+					max = mid;
+					break;
+				}
+				if (a[mid - 1] > a[mid]) {
+					e = mid - 1;
+					continue;
+				}
+				if (a[mid + 1] > a[mid]) {
+					s = mid + 1;
+					continue;
+				}
+			}
+			//binarySearch,2*lgN;
+			int lo1 = 0;
+			int hi1 = max;
+			while (lo1 <= hi1) {
+				int mid = lo1 + (hi1 - lo1) / 2;
+				if (a[mid] == k)
+					return mid;
+				if (a[mid] > k)
+					hi1 = mid - 1;
+				if (a[mid] < k)
+					lo1 = mid + 1;
+			}
+
+			int lo2 = max + 1;
+			int hi2 = le - 1;
+			while (lo2 <= hi2) {
+				int mid = lo2 + (hi2 - lo2) / 2;
+				if (a[mid] == k)
+					return mid;
+				if (a[mid] > k)
+					lo2 = mid + 1;
+				if (a[mid] < k)
+					hi2 = mid - 1;
+			}
+			return -1;
+		}
+
+		public static void main(String[] args) {
+			int[] a = { -3, -2, 5, 6, 7, 8, 9, 4, 3, 2, 1, 0, -1 };
+			int k = 4;
+			int index = search(a, k);
+			StdOut.println("index:" + index);
+		}
+	}
+
+	//?wtf;
+	static class C1_4_21 {
+
+	}
+
+	//
+	static class C1_4_22 {
+		private static int fabo(int n) {
+			if (n == 1 || n == 2)
+				return 1;
+			int[] a = new int[n];
+			a[0] = 1;
+			a[1] = 1;
+			for (int k = 2; k < n; k++) {
+				a[k] = a[k - 2] + a[k - 1];
+			}
+			return a[n - 1];
+
+		}
+
+		private static int bs(int[] sa, int k) {
+			int i = 1;
+			int le = sa.length;
+			while (le > fabo(i)) {
+				i++;
+			}
+			int[] na = new int[fabo(i)];
+			//construct a new array for fabo
+			for (int j = 0; j < na.length; j++) {
+				na[j] = sa[j];
+				if (j > sa.length - 1) {
+					na[j] = sa[sa.length - 1];
+				}
+			}
+			int lo = 0;
+			int hi = fabo(i) - 1;
+			while (lo <= hi) {
+				//
+				int m = lo + fabo(i - 2) - 1;
+				if (sa[m] < k) {
+					lo = lo + fabo(i - 2);
+					i--;
+				} else if (sa[m] > k) {
+					hi = hi - fabo(i - 1);
+					i = i - 2;
+				} else {
+					return m <= hi ? m : hi;
+				}
+			}
+			return -1;
+
+		}
+
+		public static void main(String[] args) {
+			int[] a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+			int k = 10;
+			int index = bs(a, k);
+			StdOut.println(index);
 		}
 	}
 
