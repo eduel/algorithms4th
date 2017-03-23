@@ -658,5 +658,8 @@ public class Chapter1_4 {
 			StdOut.println(index);
 		}
 	}
+	static class C1_4_23{
+		
+	}
 
 }
